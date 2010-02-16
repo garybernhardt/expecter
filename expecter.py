@@ -1,3 +1,6 @@
+__all__ = ['expect']
+
+
 class expect:
     def __init__(self, value):
         self._value = value
@@ -23,6 +26,7 @@ class expect:
     @staticmethod
     def raises(cls):
         return _RaisesExpectation(cls)
+
 
 class _RaisesExpectation:
     def __init__(self, exception_class):
