@@ -1,0 +1,37 @@
+Expecter Gadget helps you to write assertions. Never again will you forget
+which is expected and which is actual!
+
+Basic expectations are easy:
+
+    >>> from expecter import expect
+    >>> expect('something') == 'some' + 'thing'
+    >>> expect(1) > 100
+    Traceback (most recent call last):
+    ...
+    AssertionError
+
+Expectations about exceptions use the "with" statement. Everything is good if
+the expected exception is raised:
+
+    >>> from __future__ import with_statement
+    >>> with expect.raises(KeyError):
+    ...     {}[123]
+
+If it's not raised, Expecter Gadget will raise an AssertionError:
+
+    >>> with expect.raises(KeyError):
+    ...     pass
+    Traceback (most recent call last):
+    ...
+    AssertionError: Expected an exception of type KeyError but got none
+
+Exceptions that don't match the expected one will not be swallowed, so your
+test will error as you expect:
+
+    >>> from __future__ import with_statement
+    >>> with expect.raises(NameError):
+    ...     {}[123]
+    Traceback (most recent call last):
+    ...
+    KeyError: 123
+
