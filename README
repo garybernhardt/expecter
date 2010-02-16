@@ -8,7 +8,7 @@ which is expected and which is actual!
 Basic expectations are easy:
 
     >>> from expecter import expect
-    >>> expect('something') == 'some' + 'thing'
+    >>> expect('some' + 'thing') == 'something'
     >>> expect(1) > 100
     Traceback (most recent call last):
     ...
