@@ -6,22 +6,32 @@ class expect:
         self._value = value
 
     def __eq__(self, other):
-        assert self._value == other
+        assert self._value == other, ('Expected %s but got %s'
+                                      % (repr(self._value), repr(other)))
 
     def __ne__(self, other):
-        assert self._value != other
+        assert self._value != other, ('Expected anything except %s but got it'
+                                      % repr(self._value))
 
     def __lt__(self, other):
-        assert self._value < other
+        assert self._value < other, (
+            'Expected something less than %s but got %s'
+            % (repr(other), repr(self._value)))
 
     def __gt__(self, other):
-        assert self._value > other
+        assert self._value > other, (
+            'Expected something greater than %s but got %s'
+            % (repr(other), repr(self._value)))
 
     def __le__(self, other):
-        assert self._value <= other
+        assert self._value <= other, (
+            'Expected something less than or equal to %s but got %s'
+            % (repr(other), repr(self._value)))
 
     def __ge__(self, other):
-        assert self._value >= other
+        assert self._value >= other, (
+            'Expected something greater than or equal to %s but got %s'
+            % (repr(other), repr(self._value)))
 
     @staticmethod
     def raises(cls):

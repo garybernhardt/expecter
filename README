@@ -1,3 +1,7 @@
+======
+BASICS
+======
+
 Expecter Gadget helps you to write assertions. Never again will you forget
 which is expected and which is actual!
 
@@ -8,7 +12,15 @@ Basic expectations are easy:
     >>> expect(1) > 100
     Traceback (most recent call last):
     ...
-    AssertionError
+    AssertionError: Expected something greater than 100 but got 1
+
+Just read the expectations like a sentence. "expect(2) == 1 + 1" reads as
+"Expect 2 to equal 1 + 1". Obviously, the expectation is about 2, and it's
+being compared to 1 + 1. No ambiguity!
+
+==========
+EXCEPTIONS
+==========
 
 Expectations about exceptions use the "with" statement. Everything is good if
 the expected exception is raised:
