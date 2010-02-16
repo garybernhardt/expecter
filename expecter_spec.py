@@ -54,7 +54,7 @@ def describe_expecter():
             'Expected something greater than or equal to 2 but got 1')
 
     def describe_when_expecting_exceptions():
-        def swallows_expected_exceptions_to_be_raised():
+        def swallows_expected_exceptions():
             with expect.raises(KeyError):
                 raise KeyError
 
