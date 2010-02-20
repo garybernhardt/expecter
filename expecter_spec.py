@@ -73,6 +73,22 @@ def describe_expecter():
                     raise ValueError
             assert_raises(ValueError, _expects_key_error_but_gets_value_error)
 
+        def can_expect_any_exception():
+            with expect.raises():
+                raise ValueError
+
+        def can_expect_messages():
+            with expect.raises(ValueError, 'my message'):
+                raise ValueError('my message')
+
+        def can_require_messages():
+            def _fails():
+                with expect.raises(ValueError, 'my message'):
+                    raise ValueError('wrong message')
+            assert_raises(AssertionError, _fails)
+            assert fail_msg(_fails) == (
+                "Expected ValueError('my message') but got ValueError('wrong message')")
+
 def describe_readme():
     def passes_as_a_doctest():
         doctest.testfile('README', module_relative=False)
