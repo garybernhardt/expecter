@@ -77,11 +77,11 @@ def describe_expecter():
             with expect.raises():
                 raise ValueError
 
-        def can_expect_messages():
+        def can_expect_failure_messages():
             with expect.raises(ValueError, 'my message'):
                 raise ValueError('my message')
 
-        def can_require_messages():
+        def can_require_failure_messages():
             def _fails():
                 with expect.raises(ValueError, 'my message'):
                     raise ValueError('wrong message')
