@@ -33,6 +33,11 @@ class expect:
             'Expected something greater than or equal to %s but got %s'
             % (repr(other), repr(self._value)))
 
+    def isinstance(self, expected_cls):
+        assert isinstance(self._value, expected_cls), (
+            'Expected an instance of %s but got an instance of %s' % (
+                expected_cls.__name__, self._value.__class__.__name__))
+
     @staticmethod
     def raises(cls=Exception, message=None):
         return _RaisesExpectation(cls, message)

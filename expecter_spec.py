@@ -54,6 +54,13 @@ def describe_expecter():
         assert fail_msg(_fails) == (
             'Expected something greater than or equal to 2 but got 1')
 
+    def expects_isinstance():
+        expect(1).isinstance(int)
+        def _fails(): expect(1).isinstance(str)
+        assert_raises(AssertionError, _fails)
+        assert fail_msg(_fails) == (
+            'Expected an instance of str but got an instance of int')
+
     def describe_when_expecting_exceptions():
         def swallows_expected_exceptions():
             with expect.raises(KeyError):
