@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-setup(name='expectergadget',
+setup(name='expecter',
       version='0.1',
       description='Better expectation library',
       author='Gary Bernhardt',
