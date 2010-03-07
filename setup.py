@@ -1,6 +1,6 @@
 from setuptools import setup
 
-setup(name='expecter',
+setup(name='ExpecterGadget',
       version='0.1.1',
       description='Better expectation library',
       long_description=file('README').read(),
