@@ -9,5 +9,8 @@ setup(name='expecter',
       py_modules=['expecter'],
       url='http://bitbucket.org/garybernhardt/expecter-gadget',
       license='BSD',
+      classifiers=['Development Status :: 3 - Alpha',
+                   'Topic :: Software Development :: Testing',
+                   'Intended Audience :: Developers']
      )
 
