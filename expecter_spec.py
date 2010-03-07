@@ -54,6 +54,22 @@ def describe_expecter():
         assert fail_msg(_fails) == (
             'Expected something greater than or equal to 2 but got 1')
 
+    def can_chain_comparison_expectations():
+        # In each of these chains, the first expectation passes and the second
+        # fails. This forces the first expectation to return self.
+        failing_chains = [lambda: 1 == expect(1) != 1,
+                          lambda: 1 != expect(2) != 2,
+                          lambda: 1 < expect(2) != 2,
+                          lambda: 1 > expect(0) != 0,
+                          lambda: 1 <= expect(1) != 1,
+                          lambda: 1 >= expect(1) != 1]
+        for chain in failing_chains:
+            assert_raises(AssertionError, chain)
+
+        # Mote bug: if we leave the lambda in a local variable, it will try to
+        # run it as a spec.
+        del chain
+
     def expects_isinstance():
         expect(1).isinstance(int)
         def _fails(): expect(1).isinstance(str)

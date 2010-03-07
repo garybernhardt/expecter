@@ -9,6 +9,7 @@ Basic expectations are easy:
 
     >>> from expecter import expect
     >>> expect('some' + 'thing') == 'something'
+    expect('something')
     >>> expect(1) > 100
     Traceback (most recent call last):
     ...

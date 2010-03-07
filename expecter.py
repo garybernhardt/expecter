@@ -8,30 +8,39 @@ class expect:
     def __eq__(self, other):
         assert self._value == other, ('Expected %s but got %s'
                                       % (repr(self._value), repr(other)))
+        return self
 
     def __ne__(self, other):
         assert self._value != other, ('Expected anything except %s but got it'
                                       % repr(self._value))
+        return self
 
     def __lt__(self, other):
         assert self._value < other, (
             'Expected something less than %s but got %s'
             % (repr(other), repr(self._value)))
+        return self
 
     def __gt__(self, other):
         assert self._value > other, (
             'Expected something greater than %s but got %s'
             % (repr(other), repr(self._value)))
+        return self
 
     def __le__(self, other):
         assert self._value <= other, (
             'Expected something less than or equal to %s but got %s'
             % (repr(other), repr(self._value)))
+        return self
 
     def __ge__(self, other):
         assert self._value >= other, (
             'Expected something greater than or equal to %s but got %s'
             % (repr(other), repr(self._value)))
+        return self
+
+    def __repr__(self):
+        return 'expect(%s)' % repr(self._value)
 
     def isinstance(self, expected_cls):
         assert isinstance(self._value, expected_cls), (
