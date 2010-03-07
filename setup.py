@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(name='expecter',
       version='0.1.2',
-      description='Better expectation library',
+      description='Expecter Gadget, a better expectation (assertion) library',
       long_description=file('README').read(),
       author='Gary Bernhardt',
       author_email='gary.bernhardt@gmail.com',
