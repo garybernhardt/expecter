@@ -1,6 +1,6 @@
 syntax: glob
 
 *.pyc
-expectergadget.egg-info
+expecter.egg-info
 build
 dist
