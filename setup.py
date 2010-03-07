@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(name='expecter',
-      version='0.1.1',
+      version='0.1.2',
       description='Better expectation library',
       long_description=file('README').read(),
       author='Gary Bernhardt',
