@@ -7,7 +7,7 @@ class expect:
 
     def __eq__(self, other):
         assert self._value == other, ('Expected %s but got %s'
-                                      % (repr(self._value), repr(other)))
+                                      % (repr(other), repr(self._value)))
         return self
 
     def __ne__(self, other):

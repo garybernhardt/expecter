@@ -17,7 +17,7 @@ def describe_expecter():
         expect(2) == 1 + 1
         def _fails(): expect(1) == 2
         assert_raises(AssertionError, _fails)
-        assert fail_msg(_fails) == 'Expected 1 but got 2'
+        assert fail_msg(_fails) == 'Expected 2 but got 1'
 
     def expects_not_equals():
         expect(1) != 2
