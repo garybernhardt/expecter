@@ -95,6 +95,12 @@ class _RaisesExpectation:
 
 
 class CustomExpectation:
+    negative_verbs = {"can": "it can't",
+                      "is": "it isn't",
+                      "will": "it won't",
+                      "can": "it can't",
+                     }
+
     def __init__(self, predicate, actual):
         self._predicate = predicate
         self._actual = actual
@@ -105,8 +111,18 @@ class CustomExpectation:
     def enforce(self):
         if not self._predicate(self._actual):
             predicate_name = self._predicate.__name__
-            raise AssertionError('Expected that %s %s, but it wasn\'t' %
-                                 (repr(self._actual), predicate_name))
+            raise AssertionError('Expected that %s %s, but %s' %
+                                 (repr(self._actual),
+                                  predicate_name,
+                                  self._negative_verb()))
+
+    def _negative_verb(self):
+        # XXX: getting name in multiple places
+        first_word_in_predicate = self._predicate.__name__.split('_')[0]
+        try:
+            return self.negative_verbs[first_word_in_predicate]
+        except KeyError:
+            return "got False"
 
 
 _custom_expectations = {}

@@ -66,5 +66,5 @@ be generated when your predicate fails:
     >>> expect('puppy').can_meow()
     Traceback (most recent call last):
     ...
-    AssertionError: Expected that 'puppy' can_meow, but it wasn't
+    AssertionError: Expected that 'puppy' can_meow, but it can't
 
