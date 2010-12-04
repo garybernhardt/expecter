@@ -11,7 +11,7 @@ class expect(object):
             predicate = _custom_expectations[name]
             return CustomExpectation(predicate, self._actual)
         else:
-            return super(expect, self).__getattr__(name)
+            return getattr(super(expect, self), name)
 
     def __eq__(self, other):
         assert self._actual == other, (

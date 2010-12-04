@@ -48,3 +48,23 @@ test will error as you expect:
     ...
     KeyError: 123
 
+===================
+CUSTOM EXPECTATIONS
+===================
+
+You can add a custom expectation with the add_expectation method. You give it
+a predicate that should return true if the expectation succeeds and false if
+it fails. All expectation objects will grow a method with the name of your
+predicate method (so don't use a lambda). Appropriate exception messages will
+be generated when your predicate fails:
+
+    >>> import expecter
+    >>> def can_meow(thing):
+    ...     return thing == 'kitty'
+    >>> expecter.add_expectation(can_meow)
+    >>> expect('kitty').can_meow()
+    >>> expect('puppy').can_meow()
+    Traceback (most recent call last):
+    ...
+    AssertionError: Expected that 'puppy' can_meow, but it wasn't
+
