@@ -2,7 +2,7 @@ from __future__ import with_statement
 import doctest
 from nose.tools import assert_raises
 
-from expecter import expect
+from expecter import expect, add_expectation, clear_expectations
 
 
 def fail_msg(callable_):
@@ -78,6 +78,7 @@ class describe_expecter:
         assert fail_msg(_fails) == (
             'Expected an instance of str but got an instance of int')
 
+
 class describe_expecter_when_expecting_exceptions():
     def it_swallows_expected_exceptions(self):
         with expect.raises(KeyError):
@@ -112,6 +113,32 @@ class describe_expecter_when_expecting_exceptions():
         assert_raises(AssertionError, _fails)
         assert fail_msg(_fails) == (
             "Expected ValueError('my message') but got ValueError('wrong message')")
+
+
+class describe_custom_matchers:
+    def is_a_potato(self, object):
+        return object == 'potato'
+
+    def setup(self):
+        add_expectation(self.is_a_potato)
+
+    def teardown(self):
+        clear_expectations()
+
+    def they_can_succeed(self):
+        expect('potato').is_a_potato()
+
+    def they_can_fail(self):
+        def _fails():
+            expect('not a potato').is_a_potato()
+        assert_raises(AssertionError, _fails)
+        assert fail_msg(_fails) == (
+            "Expected that 'not a potato' is_a_potato, but it wasn't")
+
+    def they_can_be_cleared(self):
+        clear_expectations()
+        assert_raises(AttributeError, lambda: expect('potato').is_a_potato)
+
 
 class describe_readme:
     def it_passes_as_a_doctest(self):

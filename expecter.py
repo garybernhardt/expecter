@@ -1,9 +1,17 @@
 __all__ = ['expect']
 
 
-class expect:
+class expect(object):
     def __init__(self, actual):
         self._actual = actual
+
+    def __getattr__(self, name):
+        is_custom_expectation = name in _custom_expectations
+        if is_custom_expectation:
+            predicate = _custom_expectations[name]
+            return CustomExpectation(predicate, self._actual)
+        else:
+            return super(expect, self).__getattr__(name)
 
     def __eq__(self, other):
         assert self._actual == other, (
@@ -84,4 +92,30 @@ class _RaisesExpectation:
             return True
         else:
             pass
+
+
+class CustomExpectation:
+    def __init__(self, predicate, actual):
+        self._predicate = predicate
+        self._actual = actual
+
+    def __call__(self):
+        self.enforce()
+
+    def enforce(self):
+        if not self._predicate(self._actual):
+            predicate_name = self._predicate.__name__
+            raise AssertionError('Expected that %s %s, but it wasn\'t' %
+                                 (repr(self._actual), predicate_name))
+
+
+_custom_expectations = {}
+
+
+def add_expectation(predicate):
+    _custom_expectations[predicate.__name__] = predicate
+
+
+def clear_expectations():
+    _custom_expectations.clear()
 
