@@ -78,7 +78,6 @@ class _RaisesExpectation:
             return self.validate_failure(exc_type, exc_value)
 
     def validate_failure(self, exc_type, exc_value):
-        no_exception_was_raised = not exc_type
         wrong_message_was_raised = (self.message and
                                     self.message != str(exc_value))
         if wrong_message_was_raised:

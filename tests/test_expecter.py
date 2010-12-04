@@ -1,9 +1,8 @@
 from __future__ import with_statement
-import doctest
 from nose.tools import assert_raises
 
 from tests.util import fail_msg
-from expecter import expect, add_expectation, clear_expectations
+from expecter import expect
 
 
 class describe_expecter:
