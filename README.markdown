@@ -1,4 +1,3 @@
-======
 BASICS
 ======
 
@@ -19,7 +18,6 @@ Just read the expectations like a sentence. "expect(2) == 1 + 1" reads as
 "Expect 2 to equal 1 + 1". Obviously, the expectation is about 2, and it's
 being compared to 1 + 1. No ambiguity!
 
-==========
 EXCEPTIONS
 ==========
 
@@ -48,11 +46,10 @@ test will error as you expect:
     ...
     KeyError: 123
 
-===================
 CUSTOM EXPECTATIONS
 ===================
 
-You can add a custom expectation with the add_expectation method. You give it
+You can add a custom expectation with the add\_expectation method. You give it
 a predicate that should return true if the expectation succeeds and false if
 it fails. All expectation objects will grow a method with the name of your
 predicate method (so don't use a lambda). Appropriate exception messages will
