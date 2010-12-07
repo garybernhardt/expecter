@@ -1,0 +1,4 @@
+*.pyc
+/expecter.egg-info
+/build
+/dist
