@@ -55,6 +55,11 @@ class expect(object):
             'Expected an instance of %s but got an instance of %s' % (
                 expected_cls.__name__, self._actual.__class__.__name__))
 
+    def contains(self, other):
+        assert other in self._actual, (
+            "Expected %s to contain %s but it didn't" % (
+                repr(self._actual), repr(other)))
+
     @staticmethod
     def raises(cls=Exception, message=None):
         return _RaisesExpectation(cls, message)

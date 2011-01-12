@@ -71,3 +71,11 @@ class describe_expecter:
         assert fail_msg(_fails) == (
             'Expected an instance of str but got an instance of int')
 
+    def it_expects_containment(self):
+        expect([1]).contains(1)
+        def _fails():
+            expect([2]).contains(1)
+        assert_raises(AssertionError, _fails)
+        assert fail_msg(_fails) == (
+            "Expected [2] to contain 1 but it didn't")
+
