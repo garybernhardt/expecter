@@ -79,3 +79,11 @@ class describe_expecter:
         assert fail_msg(_fails) == (
             "Expected [2] to contain 1 but it didn't")
 
+    def it_expects_non_containment(self):
+        expect([1]).does_not_contain(0)
+        def _fails():
+            expect([1]).does_not_contain(1)
+        assert_raises(AssertionError, _fails)
+        assert fail_msg(_fails) == (
+            "Expected [1] to not contain 1 but it did")
+
