@@ -60,6 +60,11 @@ class expect(object):
             "Expected %s to contain %s but it didn't" % (
                 repr(self._actual), repr(other)))
 
+    def does_not_contain(self, other):
+        assert other not in self._actual, (
+            "Expected %s to not contain %s but it did" % (
+                repr(self._actual), repr(other)))
+
     @staticmethod
     def raises(cls=Exception, message=None):
         return _RaisesExpectation(cls, message)
