@@ -2,3 +2,4 @@
 /expecter.egg-info
 /build
 /dist
+/.tox
