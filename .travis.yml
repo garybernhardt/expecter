@@ -8,4 +8,4 @@ install:
   - pip install --use-mirrors nose
   - pip install --use-mirrors .
 script:
-  - nosetests
+  - ./runtests.py
