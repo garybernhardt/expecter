@@ -107,7 +107,6 @@ class CustomExpectation:
     negative_verbs = {"can": "it can't",
                       "is": "it isn't",
                       "will": "it won't",
-                      "can": "it can't",
                      }
 
     def __init__(self, predicate, actual):
