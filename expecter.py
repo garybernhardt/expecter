@@ -6,6 +6,9 @@ class expect(object):
         self._actual = actual
 
     def __getattr__(self, name):
+        if name == 'to':
+            return self
+
         is_custom_expectation = name in _custom_expectations
         if is_custom_expectation:
             predicate = _custom_expectations[name]
@@ -50,17 +53,17 @@ class expect(object):
     def __repr__(self):
         return 'expect(%s)' % repr(self._actual)
 
-    def isinstance(self, expected_cls):
+    def be_instance_of(self, expected_cls):
         assert isinstance(self._actual, expected_cls), (
             'Expected an instance of %s but got an instance of %s' % (
                 expected_cls.__name__, self._actual.__class__.__name__))
 
-    def contains(self, other):
+    def contain(self, other):
         assert other in self._actual, (
             "Expected %s to contain %s but it didn't" % (
                 repr(self._actual), repr(other)))
 
-    def does_not_contain(self, other):
+    def not_contain(self, other):
         assert other not in self._actual, (
             "Expected %s to not contain %s but it did" % (
                 repr(self._actual), repr(other)))
