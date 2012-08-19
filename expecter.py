@@ -75,9 +75,14 @@ class expect(object):
         """
         Ensures that the actual value is of type ``expected_cls`` (like ``assert isinstance(actual, MyClass)``).
         """
+        if isinstance(expected_cls, tuple):
+            cls_name = [c.__name__ for c in expected_cls]
+            cls_name = ' or '.join(cls_name)
+        else:
+            cls_name = expected_cls.__name__
         assert isinstance(self._actual, expected_cls), (
             'Expected an instance of %s but got an instance of %s' % (
-                expected_cls.__name__, self._actual.__class__.__name__))
+                cls_name, self._actual.__class__.__name__))
 
     def contains(self, other):
         """
@@ -214,3 +219,4 @@ def add_expectation(predicate):
 def clear_expectations():
     """Remove all custom expectations"""
     _custom_expectations.clear()
+

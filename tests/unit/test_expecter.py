@@ -86,4 +86,3 @@ class describe_expecter:
         assert_raises(AssertionError, _fails)
         assert fail_msg(_fails) == (
             "Expected [1] to not contain 1 but it did")
-
