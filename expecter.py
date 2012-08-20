@@ -2,8 +2,22 @@ __all__ = ['expect']
 
 
 class expect(object):
-    """The :class:`expect` object. This is the main interface to the
-    module."""
+    """
+    All assertions are written using :class:`expect`. Usually, it's applied to
+    the value you're making an assertion about:
+
+        >>> expect(5) > 4
+
+    This works for comparisons as you'd expect:
+
+        ==, !=, <, >, <=, >=
+
+    Note that expect() *always* goes around the actual value: the value you're
+    making an assertion about.
+
+    There are other, non-binary expectations available. They're documented
+    below.
+    """
     def __init__(self, actual):
         self._actual = actual
 
@@ -16,64 +30,34 @@ class expect(object):
             return getattr(super(expect, self), name)
 
     def __eq__(self, other):
-        """``expect(val) == other_val``
-
-        Equivalent to:
-        ``assert val == other_val``
-        """
         assert self._actual == other, (
             'Expected %s but got %s' % (repr(other), repr(self._actual)))
         return self
 
     def __ne__(self, other):
-        """``expect(val) != other_val``
-
-        Equivalent to:
-        ``assert val != other_val``
-        """
         assert self._actual != other, (
             'Expected anything except %s but got it' % repr(self._actual))
         return self
 
     def __lt__(self, other):
-        """``expect(val) < other_val``
-
-        Equivalent to:
-        ``assert val < other_val``
-        """
         assert self._actual < other, (
             'Expected something less than %s but got %s'
             % (repr(other), repr(self._actual)))
         return self
 
     def __gt__(self, other):
-        """``expect(val) > other_val``
-
-        Equivalent to:
-        ``assert val > other_val``
-        """
         assert self._actual > other, (
             'Expected something greater than %s but got %s'
             % (repr(other), repr(self._actual)))
         return self
 
     def __le__(self, other):
-        """``expect(val) <= other_val``
-
-        Equivalent to:
-        ``assert val <= other_val``
-        """
         assert self._actual <= other, (
             'Expected something less than or equal to %s but got %s'
             % (repr(other), repr(self._actual)))
         return self
 
     def __ge__(self, other):
-        """``expect(val) >= other_val``
-
-        Equivalent to:
-        ``assert val >= other_val``
-        """
         assert self._actual >= other, (
             'Expected something greater than or equal to %s but got %s'
             % (repr(other), repr(self._actual)))
@@ -83,53 +67,39 @@ class expect(object):
         return 'expect(%s)' % repr(self._actual)
 
     def isinstance(self, expected_cls):
-        """Allows you to see if the object is an instance of `expected_cls`
-
-        ``expect(val).isinstance(MyClass)``
-
-        Equivalent to:
-        ``assert isinstance(val, MyClass)``
-
-        :param expected_cls: Expected class of val
+        """
+        Ensures that the actual value is of type ``expected_cls`` (like ``assert isinstance(actual, MyClass)``).
         """
         assert isinstance(self._actual, expected_cls), (
             'Expected an instance of %s but got an instance of %s' % (
                 expected_cls.__name__, self._actual.__class__.__name__))
 
     def contains(self, other):
-        """Test that ``other`` is in the object.
-
-        ``expect(val).contains(other)``
-
-        Equivalent to:
-        ``assert other in val``
+        """
+        Ensure that ``other`` is in the actual value (like ``assert other in actual``).
         """
         assert other in self._actual, (
             "Expected %s to contain %s but it didn't" % (
                 repr(self._actual), repr(other)))
 
     def does_not_contain(self, other):
-        """Test that other is not in the object.
-
-        ``expect(val).does_not_contain(other)``
-
-        Equivalent to:
-        ``assert other not in val``
+        """
+        Opposite of ``contains``
         """
         assert other not in self._actual, (
             "Expected %s to not contain %s but it did" % (
                 repr(self._actual), repr(other)))
 
     @staticmethod
-    def raises(cls=Exception, message=None):
-        """Test that an exception is raised, e.g.,
+    def raises(expected_cls=Exception, message=None):
+        """Ensure that an exception is raised. E.g.,
 
         ::
 
             with expect.raises(MyCustomError):
                 func_that_raises_error()
 
-        Equivalent to:
+        is equivalent to:
 
         ::
 
@@ -139,12 +109,15 @@ class expect(object):
             except MyCustomError:
                 pass
         """
-        return _RaisesExpectation(cls, message)
+        return _RaisesExpectation(expected_cls, message)
 
 
 class _RaisesExpectation:
-    """The :class:`_RaisesExpectation` context manager. Used when utilizing: 
-    :func:`expect.raises`"""
+    """
+    Internal context decorator created when you do:
+        with expect.raises(SomeError):
+            something()
+    """
     def __init__(self, exception_class, message):
         self._exception_class = exception_class
         self.message = message
@@ -178,12 +151,9 @@ class _RaisesExpectation:
 
 
 class CustomExpectation:
-    """The :class:`CustomExpectation` object. Used in conjunction with
-    :func:`add_expectation`.
-
-    ::
-
-        expectation = CustomExpectation(assertion_func, val_to_test)
+    """
+    Internal class representing a single custom expectation. Don't create these
+    directly; use `expecter.add_expectation` instead.
     """
     negative_verbs = {"can": "it can't",
                       "is": "it isn't",
@@ -198,7 +168,6 @@ class CustomExpectation:
         self.enforce()
 
     def enforce(self):
-        """Enforce the expectation."""
         if not self._predicate(self._actual):
             predicate_name = self._predicate.__name__
             raise AssertionError('Expected that %s %s, but %s' %
@@ -219,10 +188,23 @@ _custom_expectations = {}
 
 
 def add_expectation(predicate):
-    """Add a custom expectation function"""
+    """
+    Add a custom expectation. After being added, custom expectations can be
+    used as if they were built-in:
+
+        >>> def is_long(x): return len(x) > 5
+        >>> add_expectation(is_long)
+        >>> expect('loooooong').is_long()
+        >>> expect('short').is_long()
+        ...
+        AssertionError: Expected that 'short' is_long, but it isn't
+
+    The name of the expectation is taken from the name of the function (as
+    shown above).
+    """
     _custom_expectations[predicate.__name__] = predicate
 
 
 def clear_expectations():
-    """Remove all expectations"""
+    """Remove all custom expectations"""
     _custom_expectations.clear()
