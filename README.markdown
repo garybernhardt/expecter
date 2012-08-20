@@ -65,3 +65,8 @@ be generated when your predicate fails:
     ...
     AssertionError: Expected that 'puppy' can_meow, but it can't
 
+API DOCUMENTATION
+=================
+
+See http://expecter-gadget.readthedocs.org/en/latest/
+
