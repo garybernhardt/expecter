@@ -25,7 +25,7 @@ class expect(object):
         is_custom_expectation = name in _custom_expectations
         if is_custom_expectation:
             predicate = _custom_expectations[name]
-            return CustomExpectation(predicate, self._actual)
+            return _CustomExpectation(predicate, self._actual)
         else:
             return getattr(super(expect, self), name)
 
@@ -150,7 +150,7 @@ class _RaisesExpectation:
             pass
 
 
-class CustomExpectation:
+class _CustomExpectation:
     """
     Internal class representing a single custom expectation. Don't create these
     directly; use `expecter.add_expectation` instead.
