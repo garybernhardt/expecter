@@ -16,30 +16,30 @@ class expect(object):
             return getattr(super(expect, self), name)
 
     def __eq__(self, other):
-        """```expect(val) == other_val```
+        """``expect(val) == other_val``
 
         Equivalent to:
-        ```assert val == other_val```
+        ``assert val == other_val``
         """
         assert self._actual == other, (
             'Expected %s but got %s' % (repr(other), repr(self._actual)))
         return self
 
     def __ne__(self, other):
-        """```expect(val) != other_val```
+        """``expect(val) != other_val``
 
         Equivalent to:
-        ```assert val != other_val```
+        ``assert val != other_val``
         """
         assert self._actual != other, (
             'Expected anything except %s but got it' % repr(self._actual))
         return self
 
     def __lt__(self, other):
-        """```expect(val) < other_val```
+        """``expect(val) < other_val``
 
         Equivalent to:
-        ```assert val < other_val```
+        ``assert val < other_val``
         """
         assert self._actual < other, (
             'Expected something less than %s but got %s'
@@ -47,10 +47,10 @@ class expect(object):
         return self
 
     def __gt__(self, other):
-        """```expect(val) > other_val```
+        """``expect(val) > other_val``
 
         Equivalent to:
-        ```assert val > other_val```
+        ``assert val > other_val``
         """
         assert self._actual > other, (
             'Expected something greater than %s but got %s'
@@ -58,10 +58,10 @@ class expect(object):
         return self
 
     def __le__(self, other):
-        """```expect(val) <= other_val```
+        """``expect(val) <= other_val``
 
         Equivalent to:
-        ```assert val <= other_val```
+        ``assert val <= other_val``
         """
         assert self._actual <= other, (
             'Expected something less than or equal to %s but got %s'
@@ -69,10 +69,10 @@ class expect(object):
         return self
 
     def __ge__(self, other):
-        """```expect(val) >= other_val```
+        """``expect(val) >= other_val``
 
         Equivalent to:
-        ```assert val >= other_val```
+        ``assert val >= other_val``
         """
         assert self._actual >= other, (
             'Expected something greater than or equal to %s but got %s'
@@ -85,10 +85,10 @@ class expect(object):
     def isinstance(self, expected_cls):
         """Allows you to see if the object is an instance of `expected_cls`
 
-        ```expect(val).isinstance(MyClass)```
+        ``expect(val).isinstance(MyClass)``
 
         Equivalent to:
-        ```assert isinstance(val, MyClass)```
+        ``assert isinstance(val, MyClass)``
 
         :param expected_cls: Expected class of val
         """
@@ -97,12 +97,12 @@ class expect(object):
                 expected_cls.__name__, self._actual.__class__.__name__))
 
     def contains(self, other):
-        """Test that ```other``` is in the object.
+        """Test that ``other`` is in the object.
 
-        ```expect(val).contains(other)```
+        ``expect(val).contains(other)``
 
         Equivalent to:
-        ```assert other in val```
+        ``assert other in val``
         """
         assert other in self._actual, (
             "Expected %s to contain %s but it didn't" % (
@@ -111,10 +111,10 @@ class expect(object):
     def does_not_contain(self, other):
         """Test that other is not in the object.
 
-        ```expect(val).does_not_contain(other)```
+        ``expect(val).does_not_contain(other)``
 
         Equivalent to:
-        ```assert other not in val```
+        ``assert other not in val``
         """
         assert other not in self._actual, (
             "Expected %s to not contain %s but it did" % (
@@ -124,19 +124,20 @@ class expect(object):
     def raises(cls=Exception, message=None):
         """Test that an exception is raised, e.g.,
 
-        ```
-        with expect.raises(MyCustomError):
-            func_that_raises_error()
-        ```
+        ::
+
+            with expect.raises(MyCustomError):
+                func_that_raises_error()
 
         Equivalent to:
-        ```
-        try:
-            func_that_raises_error()
-            raise AssertionError('Error not raised!')
-        except MyCustomError:
-            pass
-        ```
+
+        ::
+
+            try:
+                func_that_raises_error()
+                raise AssertionError('Error not raised!')
+            except MyCustomError:
+                pass
         """
         return _RaisesExpectation(cls, message)
 
