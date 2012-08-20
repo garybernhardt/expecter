@@ -13,4 +13,3 @@ setup(name='expecter',
                    'Topic :: Software Development :: Testing',
                    'Intended Audience :: Developers']
      )
-
