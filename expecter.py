@@ -7,6 +7,11 @@ class expect(object):
     the value you're making an assertion about:
 
         >>> expect(5) > 4
+        expect(5)
+        >>> expect(4) > 4
+        Traceback (most recent call last):
+        ...
+        AssertionError: Expected something greater than 4 but got 4
 
     This works for comparisons as you'd expect:
 
@@ -196,6 +201,7 @@ def add_expectation(predicate):
         >>> add_expectation(is_long)
         >>> expect('loooooong').is_long()
         >>> expect('short').is_long()
+        Traceback (most recent call last):
         ...
         AssertionError: Expected that 'short' is_long, but it isn't
 
