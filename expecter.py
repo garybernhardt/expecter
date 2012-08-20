@@ -143,6 +143,8 @@ class expect(object):
 
 
 class _RaisesExpectation:
+    """The :class:`_RaisesExpectation` context manager. Used when utilizing: 
+    :func:`expect.raises`"""
     def __init__(self, exception_class, message):
         self._exception_class = exception_class
         self.message = message
@@ -176,6 +178,13 @@ class _RaisesExpectation:
 
 
 class CustomExpectation:
+    """The :class:`CustomExpectation` object. Used in conjunction with
+    :func:`add_expectation`.
+
+    ::
+
+        expectation = CustomExpectation(assertion_func, val_to_test)
+    """
     negative_verbs = {"can": "it can't",
                       "is": "it isn't",
                       "will": "it won't",
@@ -189,6 +198,7 @@ class CustomExpectation:
         self.enforce()
 
     def enforce(self):
+        """Enforce the expectation."""
         if not self._predicate(self._actual):
             predicate_name = self._predicate.__name__
             raise AssertionError('Expected that %s %s, but %s' %
@@ -209,8 +219,10 @@ _custom_expectations = {}
 
 
 def add_expectation(predicate):
+    """Add a custom expectation function"""
     _custom_expectations[predicate.__name__] = predicate
 
 
 def clear_expectations():
+    """Remove all expectations"""
     _custom_expectations.clear()

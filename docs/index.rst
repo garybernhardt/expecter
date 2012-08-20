@@ -12,7 +12,10 @@ API
 ---
 
 .. autoclass:: expect
-    :inherited-members:
+    :special-members:
+    :members:
+
+.. autoclass:: _RaisesExpectation
 
 .. autoclass:: CustomExpectation
     :inherited-members:
