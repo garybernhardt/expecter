@@ -74,10 +74,10 @@ class describe_expecter:
     def it_expects_isintance_multi(self):
         expect('str').isinstance((str, bytes))
         def _fails():
-            expect('str').isinstance((int, long))
+            expect('str').isinstance((int, tuple))
         assert_raises(AssertionError, _fails)
         assert fail_msg(_fails) == (
-            'Expected an instance of int or long but got an instance of str')
+            'Expected an instance of int or tuple but got an instance of str')
 
     def it_expects_containment(self):
         expect([1]).contains(1)
