@@ -12,6 +12,17 @@ class describe_expecter:
         assert_raises(AssertionError, _fails)
         assert fail_msg(_fails) == 'Expected 2 but got 1'
 
+    def it_shows_diff_when_strings_differ(self):
+        def _fails(): expect('foo\nbar') == 'foo\nbaz'
+        assert_raises(AssertionError, _fails)
+        assert fail_msg(_fails) == ("Expected 'foo\\nbaz' but got 'foo\\nbar'\n"
+               "Diff:\n"
+               "@@ -1,2 +1,2 @@\n"
+               " foo\n"
+               "-baz\n"
+               "+bar"
+               ), repr(fail_msg(_fails))
+
     def it_expects_not_equals(self):
         expect(1) != 2
         def _fails(): expect(1) != 1

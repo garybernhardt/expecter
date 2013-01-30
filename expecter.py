@@ -1,4 +1,5 @@
 __all__ = ['expect']
+import difflib
 
 
 class expect(object):
@@ -35,8 +36,13 @@ class expect(object):
             return getattr(super(expect, self), name)
 
     def __eq__(self, other):
-        assert self._actual == other, (
-            'Expected %s but got %s' % (repr(other), repr(self._actual)))
+        msg = 'Expected %s but got %s' % (repr(other), repr(self._actual))
+        if isinstance(other, str) and isinstance(self._actual, str):
+            diff = difflib.unified_diff(other.split('\n'),
+                    self._actual.split('\n'),
+                    lineterm='')
+            msg = '\n'.join([msg, 'Diff:'] + list(diff)[2:])
+        assert self._actual == other, msg
         return self
 
     def __ne__(self, other):
