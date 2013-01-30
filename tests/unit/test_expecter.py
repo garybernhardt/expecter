@@ -21,7 +21,19 @@ class describe_expecter:
                " foo\n"
                "-baz\n"
                "+bar"
-               ), repr(fail_msg(_fails))
+               )
+
+    def it_shows_diff_when_unicode_strings_differ(self):
+        def _fails(): expect(u'ueber\ngeek') == u'\xfcber\ngeek'
+        assert_raises(AssertionError, _fails)
+        assert fail_msg(_fails) == (
+               u"Expected u'\\xfcber\\ngeek' but got u'ueber\\ngeek'\n"
+               "Diff:\n"
+               "@@ -1,2 +1,2 @@\n"
+               u"-\xfcber\n"
+               "+ueber\n"
+               " geek"
+               )
 
     def it_expects_not_equals(self):
         expect(1) != 2

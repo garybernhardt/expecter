@@ -36,12 +36,10 @@ class expect(object):
             return getattr(super(expect, self), name)
 
     def __eq__(self, other):
-        msg = 'Expected %s but got %s' % (repr(other), repr(self._actual))
-        if isinstance(other, str) and isinstance(self._actual, str):
-            diff = difflib.unified_diff(other.split('\n'),
-                    self._actual.split('\n'),
-                    lineterm='')
-            msg = '\n'.join([msg, 'Diff:'] + list(diff)[2:])
+        msg = u'Expected %s but got %s' % (repr(other), repr(self._actual))
+        if isinstance(other, basestring) and isinstance(self._actual,
+                basestring):
+            msg += normalized_diff(other, self._actual)
         assert self._actual == other, msg
         return self
 
@@ -226,3 +224,12 @@ def clear_expectations():
     """Remove all custom expectations"""
     _custom_expectations.clear()
 
+
+def normalized_diff(other, actual):
+    other = other.encode('utf-8')
+    actual = actual.encode('utf-8')
+    diff = difflib.unified_diff(other.split('\n'),
+            actual.split('\n'),
+            lineterm='')
+    diff = list(diff)
+    return '\n'.join(['\nDiff:'] + diff[2:]).decode('utf-8')
