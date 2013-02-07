@@ -1,4 +1,13 @@
 __all__ = ['expect']
+import difflib
+
+try:
+    import builtins as __builtins__
+except ImportError:
+    import __builtin__ as __builtins__
+
+
+basestring = getattr(__builtins__, 'basestring', (str, bytes))
 
 
 class expect(object):
@@ -35,8 +44,11 @@ class expect(object):
             return getattr(super(expect, self), name)
 
     def __eq__(self, other):
-        assert self._actual == other, (
-            'Expected %s but got %s' % (repr(other), repr(self._actual)))
+        msg = 'Expected %s but got %s' % (repr(other), repr(self._actual))
+        if isinstance(other, basestring) and isinstance(self._actual,
+                basestring):
+            msg += normalized_diff(other, self._actual)
+        assert self._actual == other, msg
         return self
 
     def __ne__(self, other):
@@ -220,3 +232,10 @@ def clear_expectations():
     """Remove all custom expectations"""
     _custom_expectations.clear()
 
+
+def normalized_diff(other, actual):
+    diff = difflib.unified_diff(other.split('\n'),
+            actual.split('\n'),
+            lineterm='')
+    diff = list(diff)
+    return '\n'.join(['\nDiff:'] + diff[2:])

@@ -5,7 +5,7 @@ python:
   - 3.2
   - 3.3
 install:
-  - pip install --use-mirrors nose
+  - pip install --use-mirrors sphinx
   - pip install --use-mirrors .
 script:
   - ./runtests.py
