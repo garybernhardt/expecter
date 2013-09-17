@@ -45,3 +45,14 @@ class describe_custom_matchers:
         clear_expectations()
         assert_raises(AttributeError, lambda: expect('potato').is_a_potato)
 
+    def they_can_have_postional_arguments(self):
+        def is_a(thing, vegetable):
+            return thing == vegetable
+        add_expectation(is_a)
+        expect('potato').is_a('potato')
+
+    def they_can_have_keyword_arguments(self):
+        def is_a(thing, vegetable):
+            return thing == vegetable
+        add_expectation(is_a)
+        expect('potato').is_a(vegetable='potato')
