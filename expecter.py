@@ -186,11 +186,11 @@ class _CustomExpectation:
         self._predicate = predicate
         self._actual = actual
 
-    def __call__(self):
-        self.enforce()
+    def __call__(self, *args, **kwargs):
+        self.enforce(*args, **kwargs)
 
-    def enforce(self):
-        if not self._predicate(self._actual):
+    def enforce(self, *args, **kwargs):
+        if not self._predicate(self._actual, *args, **kwargs):
             predicate_name = self._predicate.__name__
             raise AssertionError('Expected that %s %s, but %s' %
                                  (repr(self._actual),
