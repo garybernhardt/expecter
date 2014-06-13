@@ -1,5 +1,6 @@
 __all__ = ['expect']
 import difflib
+import pprint
 
 try:
     import builtins as __builtins__
@@ -45,9 +46,12 @@ class expect(object):
 
     def __eq__(self, other):
         msg = 'Expected %s but got %s' % (repr(other), repr(self._actual))
-        if isinstance(other, basestring) and isinstance(self._actual,
-                basestring):
+        if (isinstance(other, basestring) and
+                isinstance(self._actual, basestring)):
             msg += normalized_diff(other, self._actual)
+        elif len(repr(self._actual)) > 74:
+            msg += normalized_diff(pprint.pformat(other),
+                                   pprint.pformat(self._actual))
         assert self._actual == other, msg
         return self
 
