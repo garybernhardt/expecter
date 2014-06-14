@@ -24,7 +24,7 @@ class describe_expecter:
                ), fail_msg(_fails)
 
     def it_shows_diff_for_large_reprs(self):
-        sequence = range(1000, 1050)
+        sequence = list(range(1000, 1050))
         big_list = sequence[:20] + [1019] + sequence[20:]
         def _fails(): expect(big_list) == sequence
         assert_raises(AssertionError, _fails)
