@@ -8,7 +8,7 @@ except ImportError:
     import __builtin__ as __builtins__
 
 
-basestring = getattr(__builtins__, 'basestring', (str, bytes))
+basestring = getattr(__builtins__, 'basestring', str)
 
 
 class expect(object):
@@ -238,8 +238,8 @@ def clear_expectations():
 
 
 def normalized_diff(other, actual):
-    diff = difflib.unified_diff(other.split('\n'),
-            actual.split('\n'),
+    diff = difflib.unified_diff(other.splitlines(),
+            actual.splitlines(),
             lineterm='')
     diff = list(diff)
     return '\n'.join(['\nDiff:'] + diff[2:])

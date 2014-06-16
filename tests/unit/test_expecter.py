@@ -1,5 +1,6 @@
 from __future__ import with_statement
 from nose.tools import assert_raises
+import sys
 
 from tests.util import fail_msg
 from expecter import expect
@@ -39,6 +40,25 @@ class describe_expecter:
                "  1020,\n"
                "  1021,"
                ).format(repr(sequence), repr(big_list)), fail_msg(_fails)
+
+    def it_can_compare_bytes_in_py3k(self):
+        null = bytes((0,))
+        expect(null) == null
+        data = bytes(range(9, 32))
+        def _fails():
+            expect(data) == data + null
+        assert_raises(AssertionError, _fails)
+        if sys.version_info.major == 2:
+            return  # skip failmsg check in python 2
+        assert fail_msg(_fails) == (
+            "Expected {0} but got {1}\n"
+            "Diff:\n"
+            "@@ -1 +1 @@\n"
+            r"-b'\t\n\x0b\x0c\r\x0e\x0f\x10\x11\x12\x13\x14\x15\x16\x17"
+            r"\x18\x19\x1a\x1b\x1c\x1d\x1e\x1f\x00'" '\n'
+            r"+b'\t\n\x0b\x0c\r\x0e\x0f\x10\x11\x12\x13\x14\x15\x16\x17"
+            r"\x18\x19\x1a\x1b\x1c\x1d\x1e\x1f'"
+            ).format( repr(data + null), repr(data)), fail_msg(_fails)
 
     def it_expects_not_equals(self):
         expect(1) != 2
