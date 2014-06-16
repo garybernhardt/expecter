@@ -48,7 +48,7 @@ class describe_expecter:
         def _fails():
             expect(data) == data + null
         assert_raises(AssertionError, _fails)
-        if sys.version_info.major == 2:
+        if sys.version_info[0] == 2:
             return  # skip failmsg check in python 2
         assert fail_msg(_fails) == (
             "Expected {0} but got {1}\n"
