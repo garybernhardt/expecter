@@ -1,5 +1,6 @@
 __all__ = ['expect']
 import difflib
+import pprint
 
 try:
     import builtins as __builtins__
@@ -7,7 +8,7 @@ except ImportError:
     import __builtin__ as __builtins__
 
 
-basestring = getattr(__builtins__, 'basestring', (str, bytes))
+basestring = getattr(__builtins__, 'basestring', str)
 
 
 class expect(object):
@@ -45,9 +46,12 @@ class expect(object):
 
     def __eq__(self, other):
         msg = 'Expected %s but got %s' % (repr(other), repr(self._actual))
-        if isinstance(other, basestring) and isinstance(self._actual,
-                basestring):
+        if (isinstance(other, basestring) and
+                isinstance(self._actual, basestring)):
             msg += normalized_diff(other, self._actual)
+        elif len(repr(self._actual)) > 74:
+            msg += normalized_diff(pprint.pformat(other),
+                                   pprint.pformat(self._actual))
         assert self._actual == other, msg
         return self
 
@@ -234,8 +238,8 @@ def clear_expectations():
 
 
 def normalized_diff(other, actual):
-    diff = difflib.unified_diff(other.split('\n'),
-            actual.split('\n'),
+    diff = difflib.unified_diff(other.splitlines(),
+            actual.splitlines(),
             lineterm='')
     diff = list(diff)
     return '\n'.join(['\nDiff:'] + diff[2:])

@@ -1,5 +1,6 @@
 from __future__ import with_statement
 from nose.tools import assert_raises
+import sys
 
 from tests.util import fail_msg
 from expecter import expect
@@ -22,6 +23,31 @@ class describe_expecter:
                "-baz\n"
                "+bar"
                ), fail_msg(_fails)
+
+    def it_shows_diff_for_large_reprs(self):
+        sequence = list(range(1000, 1050))
+        big_list = sequence[:20] + [1019] + sequence[20:]
+        def _fails(): expect(big_list) == sequence
+        assert_raises(AssertionError, _fails)
+        assert fail_msg(_fails) == ("Expected {0} but got {1}\n"
+               "Diff:\n"
+               "@@ -17,6 +17,7 @@\n"
+               "  1016,\n"
+               "  1017,\n"
+               "  1018,\n"
+               "+ 1019,\n"
+               "  1019,\n"
+               "  1020,\n"
+               "  1021,"
+               ).format(repr(sequence), repr(big_list)), fail_msg(_fails)
+
+    def it_can_compare_bytes(self):
+        null = bytes((0,))
+        expect(null) == null
+        data = bytes(range(9, 32))
+        def _fails():
+            expect(data) == data + null
+        assert_raises(AssertionError, _fails)
 
     def it_expects_not_equals(self):
         expect(1) != 2
