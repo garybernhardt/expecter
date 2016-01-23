@@ -1,4 +1,5 @@
 __all__ = ['expect']
+import os
 import difflib
 import pprint
 
@@ -45,6 +46,7 @@ class expect(object):
             return getattr(super(expect, self), name)
 
     def __eq__(self, other):
+        __tracebackhide__ = _hidetraceback()
         msg = 'Expected %s but got %s' % (repr(other), repr(self._actual))
         if (isinstance(other, basestring) and
                 isinstance(self._actual, basestring)):
@@ -56,29 +58,34 @@ class expect(object):
         return self
 
     def __ne__(self, other):
+        __tracebackhide__ = _hidetraceback()
         assert self._actual != other, (
             'Expected anything except %s but got it' % repr(self._actual))
         return self
 
     def __lt__(self, other):
+        __tracebackhide__ = _hidetraceback()
         assert self._actual < other, (
             'Expected something less than %s but got %s'
             % (repr(other), repr(self._actual)))
         return self
 
     def __gt__(self, other):
+        __tracebackhide__ = _hidetraceback()
         assert self._actual > other, (
             'Expected something greater than %s but got %s'
             % (repr(other), repr(self._actual)))
         return self
 
     def __le__(self, other):
+        __tracebackhide__ = _hidetraceback()
         assert self._actual <= other, (
             'Expected something less than or equal to %s but got %s'
             % (repr(other), repr(self._actual)))
         return self
 
     def __ge__(self, other):
+        __tracebackhide__ = _hidetraceback()
         assert self._actual >= other, (
             'Expected something greater than or equal to %s but got %s'
             % (repr(other), repr(self._actual)))
@@ -91,6 +98,7 @@ class expect(object):
         """
         Ensures that the actual value is of type ``expected_cls`` (like ``assert isinstance(actual, MyClass)``).
         """
+        __tracebackhide__ = _hidetraceback()
         if isinstance(expected_cls, tuple):
             cls_name = [c.__name__ for c in expected_cls]
             cls_name = ' or '.join(cls_name)
@@ -104,6 +112,7 @@ class expect(object):
         """
         Ensure that ``other`` is in the actual value (like ``assert other in actual``).
         """
+        __tracebackhide__ = _hidetraceback()
         assert other in self._actual, (
             "Expected %s to contain %s but it didn't" % (
                 repr(self._actual), repr(other)))
@@ -112,6 +121,7 @@ class expect(object):
         """
         Opposite of ``contains``
         """
+        __tracebackhide__ = _hidetraceback()
         assert other not in self._actual, (
             "Expected %s to not contain %s but it did" % (
                 repr(self._actual), repr(other)))
@@ -152,6 +162,7 @@ class _RaisesExpectation:
         pass
 
     def __exit__(self, exc_type, exc_value, traceback):
+        __tracebackhide__ = _hidetraceback()
         success = not exc_type
         if success:
             raise AssertionError(
@@ -161,6 +172,7 @@ class _RaisesExpectation:
             return self.validate_failure(exc_type, exc_value)
 
     def validate_failure(self, exc_type, exc_value):
+        __tracebackhide__ = _hidetraceback()
         wrong_message_was_raised = (self.message and
                                     self.message != str(exc_value))
         if wrong_message_was_raised:
@@ -194,6 +206,7 @@ class _CustomExpectation:
         self.enforce(*args, **kwargs)
 
     def enforce(self, *args, **kwargs):
+        __tracebackhide__ = _hidetraceback()
         if not self._predicate(self._actual, *args, **kwargs):
             predicate_name = self._predicate.__name__
             raise AssertionError('Expected that %s %s, but %s' %
@@ -243,3 +256,7 @@ def normalized_diff(other, actual):
             lineterm='')
     diff = list(diff)
     return '\n'.join(['\nDiff:'] + diff[2:])
+
+
+def _hidetraceback():
+    return os.getenv('EXPECTER_HIDETRACEBACK')
