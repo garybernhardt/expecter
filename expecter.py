@@ -60,6 +60,8 @@ class expect(object):
             'Expected anything except %s but got it' % repr(self._actual))
         return self
 
+    __hash__ = object.__hash__
+
     def __lt__(self, other):
         assert self._actual < other, (
             'Expected something less than %s but got %s'
